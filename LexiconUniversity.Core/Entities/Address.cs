@@ -1,15 +1,15 @@
-﻿namespace LexiconUniversity.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LexiconUniversity.Core.Entities;
 
 public class Address
 {
-    public int Id { get; set; }
+    [StringLength(35, MinimumLength = 1)]
     public string Street { get; set; } = string.Empty;
+
+    [RegularExpression(@"[\d]{3}[-\w]?[\d]{2}")]
     public string ZipCode { get; set; } = string.Empty;
+
+    [StringLength(35, MinimumLength = 1)]
     public string City { get; set; } = string.Empty;
-
-    // Foreign key
-    public int StudentId { get; set; }
-
-    // Navigation property
-    public Student Student { get; set; } = default!;
 }

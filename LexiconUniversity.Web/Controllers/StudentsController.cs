@@ -10,12 +10,11 @@ namespace LexiconUniversity.Web.Controllers;
 public class StudentsController(LexiconUniversityContext context) : Controller
 {
     private readonly LexiconUniversityContext _context = context;
-    private IQueryable<Student> _students = context.Student.Include(student => student.Address);
 
     // GET: Students
     public async Task<IActionResult> Index()
     {
-        return View(await _students.ToListAsync());
+        return View(await _context.Student.ToListAsync());
     }
 
     // GET: Students/Details/5

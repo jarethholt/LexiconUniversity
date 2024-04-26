@@ -14,6 +14,11 @@ public class LexiconUniversityContext(DbContextOptions<LexiconUniversityContext>
     {
         base.OnModelCreating(modelBuilder);
 
+        var navBuilder = modelBuilder.Entity<Student>().OwnsOne(student => student.Address);
+        navBuilder.Property(address => address.Street).HasColumnName("StreetAddress");
+        navBuilder.Property(address => address.City).HasColumnName("City");
+        navBuilder.Property(address => address.ZipCode).HasColumnName("ZipCode");
+
         // Set the context up to understand a many-to-many table for enrollments
         modelBuilder.Entity<Student>()
             .HasMany(student => student.Courses)
