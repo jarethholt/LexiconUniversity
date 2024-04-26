@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LexiconUniversity.Persistence.Data;
+using LexiconUniversity.Web.Extensions;
 namespace LexiconUniversity.Web;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddDbContext<LexiconUniversityContext>(options =>
@@ -19,6 +20,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            await app.SeedDataAsync();
         }
         else
         {
