@@ -12,8 +12,8 @@ public static class WebAppExtensions
         var serviceProvider = scope.ServiceProvider;
         var context = serviceProvider.GetRequiredService<LexiconUniversityContext>();
 
-        await context.Database.EnsureDeletedAsync();
-        await context.Database.MigrateAsync();
+        //await context.Database.EnsureDeletedAsync();
+        //await context.Database.MigrateAsync();
 
         try
         {

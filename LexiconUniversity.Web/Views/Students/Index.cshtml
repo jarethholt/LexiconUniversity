@@ -34,16 +34,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Avatar)
+                <img src="@item.Avatar" alt="Profile picture" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(_ => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(_ => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(_ => item.Email)
             </td>
             <td>
                 <address street="@item.Address.Street" city="@item.Address.City" zip-code="@item.Address.ZipCode"></address>
