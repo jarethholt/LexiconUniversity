@@ -8,6 +8,8 @@ public class LexiconUniversityContext(DbContextOptions<LexiconUniversityContext>
 {
     public DbSet<Student> Student { get; set; } = default!;
 
+    public DbSet<Course> Course { get; set; } = default!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
