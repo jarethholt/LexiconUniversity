@@ -46,7 +46,7 @@
                 @Html.DisplayFor(_ => item.Email)
             </td>
             <td>
-                <address street="@item.Address.Street" city="@item.Address.City" zip-code="@item.Address.ZipCode"></address>
+                <address address="@item.Address"></address>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
