@@ -15,4 +15,5 @@ public class Student
 
     // 2 nullable foreign keys for creating many-to-many tables
     public ICollection<Course> Courses { get; set; }
+    public ICollection<Enrollment> Enrollments { get; set; }
 }
