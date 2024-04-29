@@ -12,5 +12,7 @@ public class UniversityMappings : Profile
             .ForMember(
                 dest => dest.FullName,
                 opts => opts.MapFrom<string>(s => $"{s.FirstName} {s.LastName}"));
+
+        CreateMap<Student, StudentCreateViewModel>().ReverseMap();
     }
 }

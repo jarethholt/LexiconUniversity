@@ -6,6 +6,7 @@ using LexiconUniversity.Web.Models;
 using System.Diagnostics;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Bogus;
 
 namespace LexiconUniversity.Web.Controllers;
 
@@ -13,6 +14,7 @@ public class StudentsController(LexiconUniversityContext context, IMapper mapper
 {
     private readonly LexiconUniversityContext _context = context;
     private readonly IMapper _mapper = mapper;
+    private readonly Faker _faker = new();
     private readonly MapperConfiguration _config = new(
         cfg => cfg.CreateProjection<Student, StudentSummaryViewModel>()
             .ForMember(ssvm => ssvm.FullName, conf => conf.MapFrom(s => $"{s.FirstName} {s.LastName}")));
@@ -62,15 +64,28 @@ public class StudentsController(LexiconUniversityContext context, IMapper mapper
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Avatar,FirstName,LastName,Email")] Student student)
+    public async Task<IActionResult> Create(StudentCreateViewModel studentModel)
     {
         if (ModelState.IsValid)
         {
+            Random rand = new();
+            var student = _mapper.Map<Student>(studentModel);
+            student.Avatar = _faker.Internet.Avatar();
+
+            foreach (var courseId in studentModel.SelectedCourses)
+            {
+                student.Enrollments.Add(new Enrollment
+                {
+                    CourseId = courseId,
+                    Grade = rand.Next(1, 6)
+                });
+            }
+
             _context.Add(student);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(student);
+        return View(studentModel);
     }
 
     // GET: Students/Edit/5
