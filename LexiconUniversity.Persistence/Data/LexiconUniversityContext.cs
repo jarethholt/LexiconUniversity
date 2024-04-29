@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LexiconUniversity.Core.Entities;
-using Microsoft.EntityFrameworkCore.Design;
+//using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
+//using Microsoft.Extensions.Configuration.Json;
 
 namespace LexiconUniversity.Persistence.Data;
 
@@ -33,18 +33,30 @@ public class LexiconUniversityContext(DbContextOptions<LexiconUniversityContext>
                 e => e.HasOne(e => e.Student).WithMany(s => s.Enrollments),
                 e => e.HasKey(e => new { e.CourseId, e.StudentId }));
     }
-}
 
-public class LexiconUniversityContextFactory : IDesignTimeDbContextFactory<LexiconUniversityContext>
-{
-    public LexiconUniversityContext CreateDbContext(string[] args)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<LexiconUniversityContext>();
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false)
             .Build();
         string? connectionString = configuration.GetConnectionString("LexiconUniversityContext");
-        optionsBuilder.UseSqlServer(connectionString);
-        return new LexiconUniversityContext(optionsBuilder.Options);
+        optionsBuilder.UseSqlServer(connectionString)
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        base.OnConfiguring(optionsBuilder);
     }
 }
+
+// This factory could should only be enabled when scaffolding; it will mess up migrations
+//public class LexiconUniversityContextFactory : IDesignTimeDbContextFactory<LexiconUniversityContext>
+//{
+//    public LexiconUniversityContext CreateDbContext(string[] args)
+//    {
+//        var optionsBuilder = new DbContextOptionsBuilder<LexiconUniversityContext>();
+//        IConfigurationRoot configuration = new ConfigurationBuilder()
+//            .AddJsonFile("appsettings.json", false)
+//            .Build();
+//        string? connectionString = configuration.GetConnectionString("LexiconUniversityContext");
+//        optionsBuilder.UseSqlServer(connectionString);
+//        return new LexiconUniversityContext(optionsBuilder.Options);
+//    }
+//}
