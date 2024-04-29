@@ -31,7 +31,9 @@ public class StudentsController(LexiconUniversityContext context) : Controller
             return NotFound();
         }
 
-        var student = await _context.Student
+        var student = await _context.Student.AsNoTracking()
+            .Include(s => s.Enrollments)
+            .ThenInclude(e => e.Course)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (student == null)
         {

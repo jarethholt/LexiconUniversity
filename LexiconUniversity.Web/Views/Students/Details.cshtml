@@ -14,19 +14,13 @@
             @Html.DisplayNameFor(model => model.Avatar)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avatar)
+            <img src="@Model.Avatar" alt="Profile picture" />
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.FullName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.FullName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
@@ -34,7 +28,36 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            <address address="@Model.Address"></address>
+        </dd>
     </dl>
+    <hr />
+
+    <h5>Courses</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course name</th>
+                <th>Grade (1-5)</th>
+            </tr>
+        </thead>
+        <tbody>
+@foreach (var item in Model.Enrollments) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(_ => item.Course.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => item.Grade)
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
