@@ -14,7 +14,10 @@ public class StudentsController(LexiconUniversityContext context) : Controller
     // GET: Students
     public async Task<IActionResult> Index()
     {
-        return View(await _context.Student.ToListAsync());
+        var query = _context.Student
+            .AsNoTracking()
+            .Select(s => new StudentSummaryViewModel(s.Id, s.Avatar, s.FirstName, s.LastName, s.Email));
+        return View(await query.ToListAsync());
     }
 
     // GET: Students/Details/5
