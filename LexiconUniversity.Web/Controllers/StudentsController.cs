@@ -13,15 +13,18 @@ public class StudentsController(LexiconUniversityContext context, IMapper mapper
 {
     private readonly LexiconUniversityContext _context = context;
     private readonly IMapper _mapper = mapper;
+    private readonly MapperConfiguration _config = new(
+        cfg => cfg.CreateProjection<Student, StudentSummaryViewModel>()
+            .ForMember(ssvm => ssvm.FullName, conf => conf.MapFrom(s => $"{s.FirstName} {s.LastName}")));
 
     // GET: Students
     public async Task<IActionResult> Index(int? pageNumber)
     {
         //var query = _context.Student
-        //    .AsNoTracking()
         //    .Select(s => new StudentSummaryViewModel(s.Id, s.Avatar, s.FirstName, s.LastName, s.Email));
-        var query = _mapper.ProjectTo<StudentSummaryViewModel>(
-            _context.Student.OrderBy(s => s.Id));
+        //var query = _mapper.ProjectTo<StudentSummaryViewModel>(
+        //    _context.Student.OrderBy(s => s.Id));
+        var query = _context.Student.OrderBy(s => s.Id).ProjectTo<StudentSummaryViewModel>(_config);
 
         int pageSize = 10;
         var page = PaginatedList<StudentSummaryViewModel>.CreateAsync(query, pageNumber ?? 1, pageSize);
