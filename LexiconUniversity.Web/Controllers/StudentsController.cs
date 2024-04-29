@@ -12,12 +12,15 @@ public class StudentsController(LexiconUniversityContext context) : Controller
     private readonly LexiconUniversityContext _context = context;
 
     // GET: Students
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? pageNumber)
     {
         var query = _context.Student
             .AsNoTracking()
             .Select(s => new StudentSummaryViewModel(s.Id, s.Avatar, s.FirstName, s.LastName, s.Email));
-        return View(await query.ToListAsync());
+
+        int pageSize = 10;
+        var page = PaginatedList<StudentSummaryViewModel>.CreateAsync(query, pageNumber ?? 1, pageSize);
+        return View(await page);
     }
 
     // GET: Students/Details/5
