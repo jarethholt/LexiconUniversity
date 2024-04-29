@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LexiconUniversity.Persistence.Data;
 using LexiconUniversity.Web.Extensions;
+using LexiconUniversity.Web.AutoMapperConfig;
+
 namespace LexiconUniversity.Web;
 
 public class Program
@@ -13,6 +15,8 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddAutoMapper(typeof(UniversityMappings));
 
         var app = builder.Build();
 

@@ -4,19 +4,24 @@ using LexiconUniversity.Core.Entities;
 using LexiconUniversity.Persistence.Data;
 using LexiconUniversity.Web.Models;
 using System.Diagnostics;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace LexiconUniversity.Web.Controllers;
 
-public class StudentsController(LexiconUniversityContext context) : Controller
+public class StudentsController(LexiconUniversityContext context, IMapper mapper) : Controller
 {
     private readonly LexiconUniversityContext _context = context;
+    private readonly IMapper _mapper = mapper;
 
     // GET: Students
     public async Task<IActionResult> Index(int? pageNumber)
     {
-        var query = _context.Student
-            .AsNoTracking()
-            .Select(s => new StudentSummaryViewModel(s.Id, s.Avatar, s.FirstName, s.LastName, s.Email));
+        //var query = _context.Student
+        //    .AsNoTracking()
+        //    .Select(s => new StudentSummaryViewModel(s.Id, s.Avatar, s.FirstName, s.LastName, s.Email));
+        var query = _mapper.ProjectTo<StudentSummaryViewModel>(
+            _context.Student.OrderBy(s => s.Id));
 
         int pageSize = 10;
         var page = PaginatedList<StudentSummaryViewModel>.CreateAsync(query, pageNumber ?? 1, pageSize);
